@@ -2,7 +2,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Checkbox, FormControlLabel, Typography, Box, Radio, RadioGroup, FormControl, FormLabel } from '@mui/material';
 import type HealthDeclarationInput from '../interface/health-declaration.interface';
 import api from '../api/axios';
-import { toastSuccess,toastError } from '../utils/toast';
+import { toastSuccess, toastError } from '../utils/toast';
+import { handleApiError } from '../utils/errorHandler';
 const SYMPTOM_OPTIONS = [
   'Cough',
   'Smell/taste impairment',
@@ -37,26 +38,11 @@ const HealthDeclarationForm = () => {
       toastSuccess('Health declaration submitted successfully!');
       reset();
     } catch (error: unknown) {
-      console.error('Error submitting health declaration:', error);
-      
-      if (error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as { response: { data: { errors?: { field: string; message: string }[]; message?: string } } };
-        if (axiosError.response?.data?.errors) {
-          axiosError.response.data.errors.forEach((err) => {
-            toastError(`${err.field}: ${err.message}`);
-          });
-        } else if (axiosError.response?.data?.message) {
-          toastError(axiosError.response.data.message);
-        } else {
-          toastError('Failed to submit health declaration. Please try again later.');
-        }
-      } else {
-        toastError('Failed to submit health declaration. Please try again later.');
-      }
+      handleApiError(error, 'Failed to submit health declaration. Please try again later.');
     }
   };
 
-  const onError = (errors: any) => {
+  const onError = (errors: Record<string, any>) => {
     if (errors.name) toastError(errors.name.message);
     if (errors.temperature) toastError(errors.temperature.message);
     if (errors.contactWithInfected) toastError(errors.contactWithInfected.message);
@@ -81,11 +67,9 @@ const HealthDeclarationForm = () => {
             helperText={fieldState.error?.message}
           />
         )}
-      />
-      <Controller
+      />        <Controller
         name="temperature"
         control={control}
-        rules={{ required: 'Temperature is required', }}
         render={({ field, fieldState }) => (
           <TextField
             {...field}

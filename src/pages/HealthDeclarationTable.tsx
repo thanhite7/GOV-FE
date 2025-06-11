@@ -25,7 +25,8 @@ const HealthDeclarationTable = () => {
   const fetchHealthDeclarations = async () => {
     try {
       const response = await api.get('/health-declaration');
-      setData(response.data);
+      console.log(response);
+      setData(response.data.data);
     } catch (error) {
       console.error("Error fetching health declarations:", error);
     }

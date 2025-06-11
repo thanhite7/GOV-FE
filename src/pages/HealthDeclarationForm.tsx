@@ -20,7 +20,7 @@ const HealthDeclarationForm = () => {
   const { handleSubmit, control, reset } = useForm<HealthDeclarationInput>({
     defaultValues: {
       name: '',
-      temperature: '',
+      temperature: 0,
       symptoms: [],
       contactWithInfected: false,
     },
@@ -29,13 +29,31 @@ const HealthDeclarationForm = () => {
 
   const onSubmit = async (data: HealthDeclarationInput) => {
     try {
-      await api.post('/health-declaration', data);
+      const formattedData = {
+        ...data,
+        temperature: parseFloat(data.temperature.toString())
+      }
+      await api.post('/health-declaration', formattedData);
       toastSuccess('Health declaration submitted successfully!');
-    } catch (error) {
+      reset();
+    } catch (error: unknown) {
       console.error('Error submitting health declaration:', error);
-      toastError('Failed to submit health declaration. Please try again later.');
+      
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response: { data: { errors?: { field: string; message: string }[]; message?: string } } };
+        if (axiosError.response?.data?.errors) {
+          axiosError.response.data.errors.forEach((err) => {
+            toastError(`${err.field}: ${err.message}`);
+          });
+        } else if (axiosError.response?.data?.message) {
+          toastError(axiosError.response.data.message);
+        } else {
+          toastError('Failed to submit health declaration. Please try again later.');
+        }
+      } else {
+        toastError('Failed to submit health declaration. Please try again later.');
+      }
     }
-    reset();
   };
 
   const onError = (errors: any) => {
@@ -67,7 +85,7 @@ const HealthDeclarationForm = () => {
       <Controller
         name="temperature"
         control={control}
-        rules={{ required: 'Temperature is required' }}
+        rules={{ required: 'Temperature is required', }}
         render={({ field, fieldState }) => (
           <TextField
             {...field}

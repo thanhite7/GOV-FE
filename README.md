@@ -1,28 +1,74 @@
-# Health Declaration Frontend (React + TypeScript + Vite)
+# Health Declaration Frontend
 
-## 1. Cài đặt dependencies
+A simple health declaration system built with React + TypeScript + Vite.
 
+
+
+## Tech Stack
+
+- React 18 + TypeScript
+- Vite (build tool)
+- Material-UI + Tailwind CSS
+- React Hook Form
+- Axios + Jest
+
+## Quick Start
+
+### 1. Install dependencies
 ```bash
 cd client
 npm install
 ```
 
-## 2. Chạy local (phát triển)
-
+### 2. Start development server
 ```bash
 npm run dev
 ```
-- Ứng dụng sẽ chạy ở địa chỉ: http://localhost:5173
+App runs at: http://localhost:5173
 
-## 3. Chạy unit test
-
+### 3. Run tests
 ```bash
 npm test
 ```
 
-- Test sử dụng React Testing Library + Jest.
-- Có thể xem kết quả test trực tiếp trên terminal.
+### 4. Build for production
+```bash
+npm run build
+```
+
+## Features
+
+- Health declaration form with validation
+- Data table showing all submissions
+- Comprehensive test coverage
+
+## Project Structure
+
+```
+src/
+├── components/     # UI components
+├── pages/         # Main pages
+├── services/      # API calls
+├── utils/         # Helper functions
+├── api/           # Axios config
+```
+
+## API Endpoints
+
+- GET `/api/health-declaration` - Get all declarations
+- POST `/api/health-declaration` - Create new declaration
+
+Backend server runs on port 3000.
 
 ---
 
-Nếu gặp lỗi hoặc cần cấu hình thêm, hãy kiểm tra lại file `package.json` hoặc liên hệ người phát triển.
+## Demo
+<img src="image-1.png" alt="Health Declaration Table" width="600">
+
+*Health Declaration Information Table*
+
+<img src="image.png" alt="Health Declaration Form" width="600">
+
+*Health Declaration Input Form*
+
+Need help? Check `package.json` or contact the dev team.

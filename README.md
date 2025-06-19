@@ -36,6 +36,25 @@ npm test
 npm run build
 ```
 
+## Docker Deployment
+
+### 1. Build Docker image
+```bash
+docker build -t health-declaration-client .
+```
+
+### 2. Run with Docker
+```bash
+docker run -p 3000:80 health-declaration-client
+```
+App will be available at: http://localhost:3000
+
+### 3. Using Docker Compose
+```bash
+docker-compose up -d
+```
+
+
 ## Features
 
 - Health declaration form with validation
@@ -71,4 +90,3 @@ Backend server runs on port 3000.
 
 *Health Declaration Input Form*
 
-Need help? Check `package.json` or contact the dev team.

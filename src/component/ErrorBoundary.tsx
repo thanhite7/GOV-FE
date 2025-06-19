@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { Box, Typography, Button, Paper, Alert } from '@mui/material';
 import { toastError } from '../utils/toast';
 
